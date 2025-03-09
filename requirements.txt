@@ -3,4 +3,3 @@ pandas
 seaborn
 seaborn
 matplotlib
-sklearn
