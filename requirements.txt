@@ -6,3 +6,4 @@ matplotlib
 Flask
 gunicorn
 xgboost
+streamlit
