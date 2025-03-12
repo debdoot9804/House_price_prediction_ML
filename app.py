@@ -1,5 +1,5 @@
 import pickle
-from flask import Flask,request,render_template
+from flask import Flask,request,render_template,jsonify
 import pandas as pd
 import numpy as np
 
@@ -9,38 +9,42 @@ app = Flask(__name__)
 scaler=pickle.load(open('scaler.pkl','rb')) #Loading scaler
 model=pickle.load(open('xgb_model.pkl','rb'))# Loading model
 
-@app.route('/')
+@app.route('/',)
 
 def index():
-    return render_template('index.html')
+    return render_template('Welcome to my page')
 
- 
-@app.route('/predict', methods=['GET','POST'])
+@app.route('/predict', methods=['POST'])
 def predict():
-    if request.method=="POST":
-        Latitude=float(request.form.get('Latitude'))
-        Housing_Median_Age =float(request.form.get('Housing Median Age'))
-        Total_Rooms=float(request.form.get('Total Rooms'))
-        Households=float(request.form.get('Households'))
-        Median_Income=float(request.form.get('Median Income'))
-        ocean_proximity_INLAND=float(request.form.get('ocean_proximity_INLAND'))
-        ocean_proximity_NEAR_BAY=float(request.form.get('ocean_proximity_NEAR BAY'))
-        ocean_proximity_NEAR_OCEAN=float(request.form.get('ocean_proximity_NEAR OCEAN'))
-
-        data_scaled=scaler.transform([[Latitude,Housing_Median_Age,Total_Rooms,Households,Median_Income,ocean_proximity_INLAND,ocean_proximity_NEAR_BAY,ocean_proximity_NEAR_OCEAN]])
-        result=model.predict(data_scaled)
+    try:
+        
+        data = request.get_json()
+        print("Received JSON Data:", data)  # Check supplied values from Postman
+        
+        # Ensure all required features exist
+        required_features = [
+            'latitude', 'housing_median_age', 'total_rooms',
+            'households', 'median_income', 'ocean_proximity_INLAND',
+            'ocean_proximity_NEAR BAY', 'ocean_proximity_NEAR OCEAN'
+        ]
 
         
-        return render_template('home.html',results=result[0])
-
-
-    else:
-
-        return render_template('home.html')
         
-if __name__=="__main__":
-     app.run(host="0.0.0.0")
+        # Converting input values to float
+        features = np.array([[float(data[feature]) for feature in required_features]])
+        
+        # Apply scaling
+        data_scaled = scaler.transform(features)
 
+        # Make prediction
+        prediction = model.predict(data_scaled)[0]
+
+        return jsonify({"House Price Prediction": float(prediction)})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
     
-#  if __name__ == '__main__':
-#     app.run(debug=True)
