@@ -12,7 +12,7 @@ model=pickle.load(open('xgb_model.pkl','rb'))# Loading model
 @app.route('/',)
 
 def index():
-    return render_template('Welcome to my page')
+    return render_template('index.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
