@@ -1,5 +1,5 @@
 import pickle
-from flask import Flask,request,render_template,jsonify
+from flask import Flask,request,jsonify
 import pandas as pd
 import numpy as np
 
@@ -11,10 +11,6 @@ model=pickle.load(open('xgb_model.pkl','rb'))# Loading model
 
 @app.route('/',methods=['GET','POST'])
 
-# def index():
-#     return render_template('index.html')
-
-#@app.route('/predict', methods=['POST'])
 def predict():
     try:
         
