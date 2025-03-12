@@ -9,12 +9,12 @@ app = Flask(__name__)
 scaler=pickle.load(open('scaler.pkl','rb')) #Loading scaler
 model=pickle.load(open('xgb_model.pkl','rb'))# Loading model
 
-@app.route('/',)
+@app.route('/',methods=['GET','POST'])
 
-def index():
-    return render_template('index.html')
+# def index():
+#     return render_template('index.html')
 
-@app.route('/predict', methods=['POST'])
+#@app.route('/predict', methods=['POST'])
 def predict():
     try:
         
