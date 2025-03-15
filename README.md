@@ -67,7 +67,7 @@ This project is a **House Price Prediction** model using **XGBoost Regressor**. 
   ```
 
 ### 🔹 Using Streamlit (Web UI)
-1. Open `https://housepricepredictionml-cdg4hdgdcxcfsucmipvfwh.streamlit.app/`
+1. Open `https://housepricepredictionml-debdoot.streamlit.app/`
 2. Enter feature values in the form
 3. Click **Predict** to get the house price
 
